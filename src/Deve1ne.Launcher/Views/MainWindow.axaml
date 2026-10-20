@@ -1,0 +1,298 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:Deve1ne.Launcher.ViewModels"
+        xmlns:chrome="clr-namespace:Avalonia.Controls.Chrome;assembly=Avalonia.Controls"
+        x:Class="Deve1ne.Launcher.Views.MainWindow"
+        x:DataType="vm:LauncherViewModel"
+        Title="Deve1ne Launcher" Icon="/Assets/launcher.ico"
+        Width="1120" Height="760" MinWidth="560" MinHeight="420"
+        WindowStartupLocation="CenterScreen"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaTitleBarHeightHint="52"
+        WindowDecorations="BorderOnly"
+        Background="{StaticResource PaperBrush}">
+    <Window.Styles>
+        <!-- Radio buttons drawn as segments (filters, grid / table). -->
+        <Style Selector="RadioButton.segment">
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Foreground" Value="{StaticResource MutedBrush}" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Padding" Value="12,0" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+                        <ContentPresenter Content="{TemplateBinding Content}" VerticalAlignment="Center"
+                                          Foreground="{TemplateBinding Foreground}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+        <Style Selector="RadioButton.segment:pointerover">
+            <Setter Property="Background" Value="{StaticResource HoverBrush}" />
+            <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+        </Style>
+        <Style Selector="RadioButton.segment:checked">
+            <Setter Property="Background" Value="{StaticResource InkBrush}" />
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+        <Style Selector="RadioButton.segment:checked TextBlock.count">
+            <Setter Property="Foreground" Value="#9C9C9C" />
+        </Style>
+        <Style Selector="Border.vline">
+            <Setter Property="Width" Value="1" />
+            <Setter Property="Background" Value="{StaticResource LineBrush}" />
+        </Style>
+    </Window.Styles>
+
+
+    <DockPanel>
+        <!-- Title bar: brand, sections, actions and the window buttons. -->
+        <Border DockPanel.Dock="Top" Height="52" BorderBrush="{StaticResource LineBrush}" BorderThickness="0,0,0,1"
+                Background="{StaticResource PaperBrush}" chrome:WindowDecorationProperties.ElementRole="TitleBar">
+            <Grid ColumnDefinitions="Auto,Auto,*,Auto">
+                <StackPanel Orientation="Horizontal" Spacing="9" Margin="16,0,18,0" VerticalAlignment="Center" IsHitTestVisible="False">
+                    <Image Source="/Assets/apps/launcher.png" Width="24" Height="24" />
+                    <TextBlock Text="DEVE1NE" FontFamily="{StaticResource DisplayFont}" FontSize="20" FontWeight="Black" LetterSpacing="1.2" VerticalAlignment="Center" />
+                </StackPanel>
+                <Border Grid.Column="1" BorderBrush="{StaticResource LineBrush}" BorderThickness="1,0,0,0" Padding="16,0">
+                    <StackPanel Orientation="Horizontal" Spacing="12" VerticalAlignment="Center" IsHitTestVisible="False">
+                        <Border Background="{StaticResource InkBrush}" Padding="9,4">
+                            <TextBlock Classes="mono" Text="LAUNCHER" Foreground="White" FontWeight="Bold" />
+                        </Border>
+                        <TextBlock Classes="mono muted" Text="APP SUITE" />
+                    </StackPanel>
+                </Border>
+
+                <StackPanel Grid.Column="3" Orientation="Horizontal">
+                    <Border Classes="vline" />
+                    <StackPanel Orientation="Horizontal" Margin="10,0" VerticalAlignment="Center"
+                                chrome:WindowDecorationProperties.ElementRole="User">
+                        <RadioButton Classes="segment" GroupName="view" Height="30" IsChecked="{Binding IsGridView}">
+                            <TextBlock Classes="mono" Text="GRID" />
+                        </RadioButton>
+                        <RadioButton Classes="segment" GroupName="view" Height="30" IsChecked="{Binding IsTableView}">
+                            <TextBlock Classes="mono" Text="TABLE" />
+                        </RadioButton>
+                    </StackPanel>
+                    <Border Classes="vline" />
+                    <Button Classes="flat" Padding="16,0" Command="{Binding OpenGitHubCommand}" ToolTip.Tip="Deve1ne on GitHub"
+                            chrome:WindowDecorationProperties.ElementRole="User">
+                        <TextBlock Classes="mono" Text="GITHUB ↗" />
+                    </Button>
+                    <Border Classes="vline" />
+                    <Button Classes="flat" Width="50" Command="{Binding CheckCommand}" ToolTip.Tip="Check for updates"
+                            chrome:WindowDecorationProperties.ElementRole="User">
+                        <PathIcon Data="{StaticResource IconRefresh}" Width="15" Height="15" />
+                    </Button>
+                    <Border Classes="vline" />
+                    <Button Classes="flat" Width="50" ToolTip.Tip="Settings" chrome:WindowDecorationProperties.ElementRole="User">
+                        <PathIcon Data="{StaticResource IconSettings}" Width="16" Height="16" />
+                        <Button.Flyout>
+                            <Flyout Placement="BottomEdgeAlignedRight">
+                                <StackPanel Width="300" Spacing="10" Margin="6">
+                                    <TextBlock Classes="mono" Text="SETTINGS" FontWeight="Bold" />
+                                    <CheckBox IsChecked="{Binding LaunchAfterInstall}" Content="Start an app after installing or updating it" />
+                                    <CheckBox IsChecked="{Binding KeepDownloads}" Content="Keep the downloaded installers" />
+                                    <Button Classes="link" Padding="0" Command="{Binding OpenDownloadsCommand}">
+                                        <TextBlock Classes="mono" Text="OPEN THE DOWNLOAD FOLDER ↗" />
+                                    </Button>
+                                    <TextBlock Classes="mono faint" Text="{Binding VersionText}" />
+                                </StackPanel>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
+                    <Border Classes="vline" />
+                    <Button Classes="caption" Name="MinimizeButton" chrome:WindowDecorationProperties.ElementRole="MinimizeButton">
+                        <PathIcon Data="{StaticResource IconMinimize}" />
+                    </Button>
+                    <Button Classes="caption" Name="MaximizeButton" chrome:WindowDecorationProperties.ElementRole="MaximizeButton">
+                        <PathIcon Data="{StaticResource IconMaximize}" />
+                    </Button>
+                    <Button Classes="caption close" Name="CloseButton" chrome:WindowDecorationProperties.ElementRole="CloseButton">
+                        <PathIcon Data="{StaticResource IconClose}" />
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Footer: when GitHub was checked, links, platform. -->
+        <Border DockPanel.Dock="Bottom" Height="34" BorderBrush="{StaticResource LineBrush}" BorderThickness="0,1,0,0" Padding="16,0">
+            <Grid ColumnDefinitions="*,Auto,*">
+                <TextBlock Classes="mono faint" Text="{Binding StatusText}" FontSize="10.5" TextTrimming="CharacterEllipsis" />
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="10">
+                    <Button Classes="link" Command="{Binding OpenWebsiteCommand}"><TextBlock Classes="mono" Text="WEBSITE ↗" FontSize="10.5" /></Button>
+                    <Button Classes="link" Command="{Binding OpenGitHubCommand}"><TextBlock Classes="mono" Text="GITHUB ↗" FontSize="10.5" /></Button>
+                    <Button Classes="link" Command="{Binding OpenReleasesCommand}"><TextBlock Classes="mono" Text="RELEASES ↗" FontSize="10.5" /></Button>
+                </StackPanel>
+                <TextBlock Grid.Column="2" Classes="mono faint" Text="INSTALLING FOR WINDOWS X64" FontSize="10.5" HorizontalAlignment="Right" />
+            </Grid>
+        </Border>
+
+        <!-- Filters, sort and search. -->
+        <Grid DockPanel.Dock="Top" ColumnDefinitions="Auto,*,Auto,Auto,Auto" Margin="16,18,16,16">
+            <Border BorderBrush="{StaticResource LineBrush}" BorderThickness="1" Height="34" HorizontalAlignment="Left">
+                <StackPanel Orientation="Horizontal">
+                    <RadioButton Classes="segment" GroupName="filter" IsChecked="{Binding FilterAll}">
+                        <StackPanel Orientation="Horizontal"><TextBlock Classes="mono" Text="ALL" /><TextBlock Classes="mono count" Text="{Binding AllCount}" /></StackPanel>
+                    </RadioButton>
+                    <Border Classes="vline" />
+                    <RadioButton Classes="segment" GroupName="filter" IsChecked="{Binding FilterInstalled}">
+                        <StackPanel Orientation="Horizontal"><TextBlock Classes="mono" Text="INSTALLED" /><TextBlock Classes="mono count" Text="{Binding InstalledCount}" /></StackPanel>
+                    </RadioButton>
+                    <Border Classes="vline" />
+                    <RadioButton Classes="segment" GroupName="filter" IsChecked="{Binding FilterUpdates}">
+                        <StackPanel Orientation="Horizontal"><TextBlock Classes="mono" Text="UPDATES" /><TextBlock Classes="mono count" Text="{Binding UpdatesCount}" /></StackPanel>
+                    </RadioButton>
+                    <Border Classes="vline" />
+                    <RadioButton Classes="segment" GroupName="filter" IsChecked="{Binding FilterNotInstalled}">
+                        <StackPanel Orientation="Horizontal"><TextBlock Classes="mono" Text="NOT INSTALLED" /><TextBlock Classes="mono count" Text="{Binding NotInstalledCount}" /></StackPanel>
+                    </RadioButton>
+                </StackPanel>
+            </Border>
+            <TextBlock Grid.Column="2" Classes="mono faint" Text="SORT" Margin="0,0,10,0" />
+            <ComboBox Grid.Column="3" Classes="sort" ItemsSource="{x:Static vm:LauncherViewModel.SortOptions}" SelectedItem="{Binding Sort}" Margin="0,0,8,0" />
+            <TextBox Grid.Column="4" Classes="search" Width="230" Text="{Binding Search}" PlaceholderText="Search apps…">
+                <TextBox.InnerLeftContent>
+                    <PathIcon Data="{StaticResource IconSearch}" Width="13" Height="13" Margin="10,0,0,0" Foreground="{StaticResource FaintBrush}" />
+                </TextBox.InnerLeftContent>
+            </TextBox>
+        </Grid>
+
+        <ScrollViewer Name="Scroller" Padding="16,0,16,16">
+            <Panel>
+                <!-- Grid of cards: a shared outer line, each card draws its right and bottom lines. -->
+                <Border BorderBrush="{StaticResource LineBrush}" BorderThickness="1,1,0,0" IsVisible="{Binding IsGridView}"
+                        VerticalAlignment="Top" HorizontalAlignment="Stretch">
+                    <ItemsControl ItemsSource="{Binding VisibleApps}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="{Binding Columns}" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:AppCardViewModel">
+                                <Border BorderBrush="{StaticResource LineBrush}" BorderThickness="0,0,1,1" Padding="0,0,0,20">
+                                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
+                                        <!-- Number tag and links. -->
+                                        <Grid ColumnDefinitions="Auto,*,Auto" Margin="18,0" Height="38">
+                                            <Border Background="{Binding AccentBrush}" Padding="8,3" VerticalAlignment="Center">
+                                                <TextBlock Classes="mono" Text="{Binding App.Number}" FontWeight="Bold" />
+                                            </Border>
+                                            <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="4">
+                                                <Button Classes="link" Command="{Binding OpenWebsiteCommand}"><TextBlock Classes="mono" Text="WEBSITE ↗" FontSize="10.5" /></Button>
+                                                <Button Classes="link" Command="{Binding OpenGitHubCommand}"><TextBlock Classes="mono" Text="GITHUB ↗" FontSize="10.5" /></Button>
+                                            </StackPanel>
+                                        </Grid>
+                                        <Border Grid.Row="1" Height="1" Background="{StaticResource LineBrush}" />
+
+                                        <!-- Icon, name, tagline. -->
+                                        <Grid Grid.Row="2" ColumnDefinitions="Auto,*" Margin="18,18,18,0">
+                                            <Image Source="{Binding Icon}" Width="58" Height="58" VerticalAlignment="Top" />
+                                            <StackPanel Grid.Column="1" Margin="14,4,0,0" Spacing="3">
+                                                <TextBlock FontSize="23" FontWeight="SemiBold" TextTrimming="CharacterEllipsis">
+                                                    <Run Text="{Binding App.Name}" /><Run Text="{Binding App.Accent}" Foreground="{Binding AccentBrush}" />
+                                                </TextBlock>
+                                                <TextBlock Text="{Binding App.Tagline}" FontSize="13" Classes="muted" TextTrimming="CharacterEllipsis"
+                                                           ToolTip.Tip="{Binding App.Tagline}" />
+                                            </StackPanel>
+                                        </Grid>
+
+                                        <!-- Status and version. -->
+                                        <StackPanel Grid.Row="3" Margin="18,18,18,0" Spacing="12">
+                                            <Border Background="{Binding BadgeBackground}" BorderBrush="{Binding BadgeBorder}" BorderThickness="1"
+                                                    Padding="7,3" HorizontalAlignment="Left">
+                                                <TextBlock Classes="mono" Text="{Binding BadgeText}" Foreground="{Binding BadgeForeground}" FontSize="10.5" />
+                                            </Border>
+                                            <StackPanel Spacing="2">
+                                                <TextBlock Text="{Binding VersionLine}" FontSize="13" Classes="muted" />
+                                                <TextBlock Text="{Binding InstalledLine}" FontSize="12" Classes="faint"
+                                                           IsVisible="{Binding InstalledLine, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                                            </StackPanel>
+                                        </StackPanel>
+
+                                        <!-- Action. -->
+                                        <Grid Grid.Row="4" ColumnDefinitions="*,8,Auto" Margin="18,22,18,0">
+                                            <Panel>
+                                                <Button Classes="primary" Command="{Binding PrimaryCommand}" IsEnabled="{Binding PrimaryEnabled}">
+                                                    <TextBlock Classes="mono" Text="{Binding PrimaryText}" />
+                                                </Button>
+                                                <ProgressBar Classes="thin" VerticalAlignment="Bottom" Value="{Binding Progress}" Maximum="100"
+                                                             Foreground="{Binding AccentBrush}" IsVisible="{Binding HasProgress}" />
+                                            </Panel>
+                                            <Button Grid.Column="2" Classes="outline" Click="OnMoreClick" ToolTip.Tip="More">
+                                                <TextBlock Text="…" FontSize="14" Margin="0,-4,0,0" />
+                                            </Button>
+                                        </Grid>
+                                        <TextBlock Grid.Row="5" Text="{Binding ErrorText}" Foreground="{StaticResource ErrorBrush}" FontSize="12"
+                                                   TextWrapping="Wrap" Margin="18,10,18,0"
+                                                   IsVisible="{Binding ErrorText, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Border>
+
+                <!-- Table: one row per app. -->
+                <Border BorderBrush="{StaticResource LineBrush}" BorderThickness="1,1,1,0" IsVisible="{Binding IsTableView}" VerticalAlignment="Top">
+                    <StackPanel>
+                        <Grid ColumnDefinitions="64,*,250,190,150,46" Height="32" Background="{StaticResource PaperDarkBrush}">
+                            <TextBlock Classes="mono faint" Text="#" Margin="18,0,0,0" FontSize="10.5" />
+                            <TextBlock Grid.Column="1" Classes="mono faint" Text="APP" FontSize="10.5" />
+                            <TextBlock Grid.Column="2" Classes="mono faint" Text="STATUS" FontSize="10.5" />
+                            <TextBlock Grid.Column="3" Classes="mono faint" Text="VERSION" FontSize="10.5" />
+                        </Grid>
+                        <ItemsControl ItemsSource="{Binding VisibleApps}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="vm:AppCardViewModel">
+                                    <Border BorderBrush="{StaticResource LineBrush}" BorderThickness="0,1,0,0">
+                                        <StackPanel>
+                                            <Grid ColumnDefinitions="64,*,250,190,150,46" MinHeight="64">
+                                                <Border Background="{Binding AccentBrush}" Padding="7,2" Margin="18,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                                    <TextBlock Classes="mono" Text="{Binding App.Number}" FontWeight="Bold" FontSize="10.5" />
+                                                </Border>
+                                                <Grid Grid.Column="1" ColumnDefinitions="Auto,*" VerticalAlignment="Center" Margin="0,0,16,0">
+                                                    <Image Source="{Binding Icon}" Width="34" Height="34" Margin="0,0,12,0" />
+                                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="1">
+                                                        <TextBlock FontSize="15" FontWeight="SemiBold">
+                                                            <Run Text="{Binding App.Name}" /><Run Text="{Binding App.Accent}" Foreground="{Binding AccentBrush}" />
+                                                        </TextBlock>
+                                                        <TextBlock Text="{Binding App.Tagline}" FontSize="12" Classes="muted" TextTrimming="CharacterEllipsis" />
+                                                    </StackPanel>
+                                                </Grid>
+                                                <Border Grid.Column="2" Background="{Binding BadgeBackground}" BorderBrush="{Binding BadgeBorder}" BorderThickness="1"
+                                                        Padding="7,3" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                                    <TextBlock Classes="mono" Text="{Binding BadgeText}" Foreground="{Binding BadgeForeground}" FontSize="10" />
+                                                </Border>
+                                                <StackPanel Grid.Column="3" VerticalAlignment="Center" Spacing="1">
+                                                    <TextBlock Text="{Binding VersionLine}" FontSize="12" Classes="muted" TextTrimming="CharacterEllipsis" />
+                                                    <TextBlock Text="{Binding InstalledLine}" FontSize="11.5" Classes="faint"
+                                                               IsVisible="{Binding InstalledLine, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                                                </StackPanel>
+                                                <Panel Grid.Column="4" VerticalAlignment="Center" Margin="0,0,8,0">
+                                                    <Button Classes="primary" Height="30" Command="{Binding PrimaryCommand}" IsEnabled="{Binding PrimaryEnabled}">
+                                                        <TextBlock Classes="mono" Text="{Binding PrimaryText}" FontSize="10.5" />
+                                                    </Button>
+                                                    <ProgressBar Classes="thin" VerticalAlignment="Bottom" Value="{Binding Progress}" Maximum="100"
+                                                                 Foreground="{Binding AccentBrush}" IsVisible="{Binding HasProgress}" />
+                                                </Panel>
+                                                <Button Grid.Column="5" Classes="outline" Height="30" MinWidth="30" Margin="0,0,10,0" VerticalAlignment="Center"
+                                                        Click="OnMoreClick" ToolTip.Tip="More">
+                                                    <TextBlock Text="…" FontSize="13" Margin="0,-4,0,0" />
+                                                </Button>
+                                            </Grid>
+                                            <TextBlock Text="{Binding ErrorText}" Foreground="{StaticResource ErrorBrush}" FontSize="12" TextWrapping="Wrap"
+                                                       Margin="64,0,18,10" IsVisible="{Binding ErrorText, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <Border Height="1" Background="{StaticResource LineBrush}" />
+                    </StackPanel>
+                </Border>
+            </Panel>
+        </ScrollViewer>
+    </DockPanel>
+</Window>

@@ -1,0 +1,22 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Deve1ne.Launcher.Views.ConfirmWindow"
+        Title="Deve1ne Launcher" Icon="/Assets/launcher.ico"
+        Width="440" SizeToContent="Height" CanResize="False" CanMinimize="False" CanMaximize="False"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource PaperBrush}">
+    <Border BorderBrush="{StaticResource InkBrush}" BorderThickness="0,3,0,0">
+        <StackPanel Margin="24,20,24,20" Spacing="12">
+            <TextBlock Name="TitleText" FontSize="19" FontWeight="SemiBold" />
+            <TextBlock Name="MessageText" FontSize="13" Classes="muted" TextWrapping="Wrap" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8" Margin="0,8,0,0">
+                <Button Name="CancelButton" Classes="outline" Padding="18,0" IsCancel="True">
+                    <TextBlock Classes="mono" Text="CANCEL" />
+                </Button>
+                <Button Name="ConfirmButton" Classes="primary" Padding="18,0" HorizontalAlignment="Right" IsDefault="True">
+                    <TextBlock Name="ConfirmText" Classes="mono" />
+                </Button>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</Window>

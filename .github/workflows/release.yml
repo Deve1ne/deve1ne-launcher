@@ -1,0 +1,57 @@
+name: Release
+
+# Pushing a version tag (v1.2.3) tests, builds the launcher and publishes it as a GitHub release.
+# Run it by hand (Actions > Release > Run workflow) to only build the executable as an artifact.
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  build:
+    name: Windows launcher
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Version
+        shell: bash
+        run: |
+          if [ "$GITHUB_REF_TYPE" = tag ]; then v="${GITHUB_REF_NAME#v}"; else v="0.0.0-dev"; fi
+          echo "VERSION=$v" >> "$GITHUB_ENV"
+      - name: Test
+        run: dotnet test -c Release
+      - name: Publish
+        shell: bash
+        run: |
+          dotnet publish src/Deve1ne.Launcher/Deve1ne.Launcher.csproj -c Release -r win-x64 --self-contained true \
+            -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true \
+            -p:DebugType=None -p:DebugSymbols=false -p:Version="$VERSION" -o publish
+          mkdir dist
+          cp publish/Deve1neLauncher.exe "dist/Deve1ne-Launcher-$VERSION-win-x64.exe"
+          cd dist && sha256sum * > SHA256SUMS.txt && cat SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: launcher-windows
+          path: dist/*
+          if-no-files-found: error
+      - uses: softprops/action-gh-release@v2
+        if: github.ref_type == 'tag'
+        with:
+          name: Deve1ne Launcher ${{ github.ref_name }}
+          files: dist/*
+          body: |
+            Download **`Deve1ne-Launcher-*-win-x64.exe`** and run it. It installs itself for the current user
+            (no administrator rights, Start menu shortcut, entry in *Settings > Apps*), then installs and
+            updates the Deve1ne apps from their GitHub releases. It updates itself the same way.
+
+            Not code-signed yet: Windows SmartScreen may ask for confirmation (*More info* > *Run anyway*).

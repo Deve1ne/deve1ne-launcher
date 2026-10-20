@@ -1,0 +1,241 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Deve1ne.Launcher.App"
+             RequestedThemeVariant="Light">
+    <!-- Paper and ink: a light, editorial look with monospaced capitals for every label. -->
+    <Application.Resources>
+        <ResourceDictionary>
+            <SolidColorBrush x:Key="PaperBrush" Color="#F2F1EC" />
+            <SolidColorBrush x:Key="PaperDarkBrush" Color="#E9E8E2" />
+            <SolidColorBrush x:Key="LineBrush" Color="#D2D0C8" />
+            <SolidColorBrush x:Key="InkBrush" Color="#121212" />
+            <SolidColorBrush x:Key="InkHoverBrush" Color="#2E2E2E" />
+            <SolidColorBrush x:Key="MutedBrush" Color="#5F5D57" />
+            <SolidColorBrush x:Key="FaintBrush" Color="#8E8B83" />
+            <SolidColorBrush x:Key="HoverBrush" Color="#E4E3DC" />
+            <SolidColorBrush x:Key="ErrorBrush" Color="#B3261E" />
+            <!-- Bundled (OFL): Geist Mono for every label, Archivo for the wordmark. -->
+            <FontFamily x:Key="MonoFont">avares://Deve1neLauncher/Assets/fonts#Geist Mono, Cascadia Mono, Consolas, monospace</FontFamily>
+            <FontFamily x:Key="DisplayFont">avares://Deve1neLauncher/Assets/fonts#Archivo Black, avares://Deve1neLauncher/Assets/fonts#Archivo, $Default</FontFamily>
+            <FontFamily x:Key="SansFont">fonts:Inter#Inter, $Default</FontFamily>
+
+            <StreamGeometry x:Key="IconRefresh">M13.65,2.35 A7.95,7.95 0 0 0 8,0 A8,8 0 1 0 15.75,10 H13.65 A6,6 0 1 1 8,2 A5.9,5.9 0 0 1 12.2,3.8 L9,7 H16 V0 Z</StreamGeometry>
+            <!-- Settings: three sliders. -->
+            <StreamGeometry x:Key="IconSettings">M0,2.3 H16 V3.7 H0 Z M0,7.3 H16 V8.7 H0 Z M0,12.3 H16 V13.7 H0 Z M3,0.5 H6 V5.5 H3 Z M10,5.5 H13 V10.5 H10 Z M5,10.5 H8 V15.5 H5 Z</StreamGeometry>
+            <StreamGeometry x:Key="IconSearch">M1.5,6.5 A5,5 0 1 1 11.5,6.5 A5,5 0 1 1 1.5,6.5 Z M2.9,6.5 A3.6,3.6 0 1 0 10.1,6.5 A3.6,3.6 0 1 0 2.9,6.5 Z M9.6,10.9 L10.9,9.6 L14.9,13.6 L13.6,14.9 Z</StreamGeometry>
+            <StreamGeometry x:Key="IconLauncher">M2,2 H7 V7 H2 Z M9,2 H14 V7 H9 Z M2,9 H7 V14 H2 Z M11.5,8.5 L14.5,11.5 L11.5,14.5 L8.5,11.5 Z</StreamGeometry>
+            <StreamGeometry x:Key="IconMinimize">M0,5 H10 V6 H0 Z</StreamGeometry>
+            <StreamGeometry x:Key="IconMaximize">M0,0 H10 V10 H0 Z M1,1 V9 H9 V1 Z</StreamGeometry>
+            <StreamGeometry x:Key="IconClose">M0.7,0 L5,4.3 L9.3,0 L10,0.7 L5.7,5 L10,9.3 L9.3,10 L5,5.7 L0.7,10 L0,9.3 L4.3,5 L0,0.7 Z</StreamGeometry>
+        </ResourceDictionary>
+    </Application.Resources>
+
+    <Application.Styles>
+        <FluentTheme />
+
+        <Style Selector="Window">
+            <Setter Property="FontFamily" Value="{StaticResource SansFont}" />
+            <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+        </Style>
+
+        <!-- Monospaced capitals: tabs, tags, links, buttons, status. -->
+        <Style Selector="TextBlock.mono">
+            <Setter Property="FontFamily" Value="{StaticResource MonoFont}" />
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="LetterSpacing" Value="1.4" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style Selector="TextBlock.muted">
+            <Setter Property="Foreground" Value="{StaticResource MutedBrush}" />
+        </Style>
+        <Style Selector="TextBlock.faint">
+            <Setter Property="Foreground" Value="{StaticResource FaintBrush}" />
+        </Style>
+
+        <!-- Flat button: no chrome, hover tint. -->
+        <Style Selector="Button.flat">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="CornerRadius" Value="0" />
+            <Setter Property="Padding" Value="10,0" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+            <Setter Property="Cursor" Value="Hand" />
+        </Style>
+        <Style Selector="Button.flat:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="{StaticResource HoverBrush}" />
+            <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+        </Style>
+        <Style Selector="Button.flat:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="{StaticResource PaperDarkBrush}" />
+        </Style>
+
+        <!-- Link: mono capitals with an arrow, no background. -->
+        <Style Selector="Button.link">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="6,2" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+        </Style>
+        <Style Selector="Button.link:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+        </Style>
+        <Style Selector="Button.link:pointerover TextBlock">
+            <Setter Property="TextDecorations" Value="Underline" />
+        </Style>
+        <Style Selector="Button.link:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+
+        <!-- Primary action: solid ink. -->
+        <Style Selector="Button.primary">
+            <Setter Property="Background" Value="{StaticResource InkBrush}" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="CornerRadius" Value="0" />
+            <Setter Property="Height" Value="34" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Cursor" Value="Hand" />
+        </Style>
+        <Style Selector="Button.primary:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="{StaticResource InkHoverBrush}" />
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+        <Style Selector="Button.primary:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="Black" />
+        </Style>
+        <Style Selector="Button.primary:disabled /template/ ContentPresenter">
+            <Setter Property="Background" Value="{StaticResource PaperDarkBrush}" />
+            <Setter Property="Foreground" Value="{StaticResource FaintBrush}" />
+        </Style>
+        <Style Selector="Button.primary TextBlock">
+            <Setter Property="FontWeight" Value="Bold" />
+        </Style>
+
+        <!-- Outlined square: the "…" menu next to the primary action, dialog buttons. -->
+        <Style Selector="Button.outline">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="{StaticResource LineBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="0" />
+            <Setter Property="Height" Value="34" />
+            <Setter Property="MinWidth" Value="38" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+            <Setter Property="Cursor" Value="Hand" />
+        </Style>
+        <Style Selector="Button.outline:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="{StaticResource HoverBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource InkBrush}" />
+            <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+        </Style>
+
+        <!-- Segmented filter tabs. -->
+        <Style Selector="ToggleButton.segment">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="CornerRadius" Value="0" />
+            <Setter Property="Padding" Value="12,0" />
+            <Setter Property="Height" Value="32" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Foreground" Value="{StaticResource MutedBrush}" />
+            <Setter Property="Cursor" Value="Hand" />
+        </Style>
+        <Style Selector="ToggleButton.segment:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="{StaticResource HoverBrush}" />
+            <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+        </Style>
+        <Style Selector="ToggleButton.segment:checked /template/ ContentPresenter">
+            <Setter Property="Background" Value="{StaticResource InkBrush}" />
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+        <Style Selector="ToggleButton.segment:checked TextBlock.count">
+            <Setter Property="Foreground" Value="#9A9A9A" />
+        </Style>
+        <Style Selector="TextBlock.count">
+            <Setter Property="Foreground" Value="{StaticResource FaintBrush}" />
+            <Setter Property="Margin" Value="6,0,0,0" />
+        </Style>
+
+        <Style Selector="TextBox.search">
+            <Setter Property="CornerRadius" Value="0" />
+            <Setter Property="Background" Value="{StaticResource PaperDarkBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource LineBrush}" />
+            <Setter Property="Height" Value="32" />
+            <Setter Property="MinHeight" Value="32" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="13" />
+        </Style>
+        <Style Selector="TextBox.search:pointerover /template/ Border#PART_BorderElement">
+            <Setter Property="Background" Value="{StaticResource PaperDarkBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource FaintBrush}" />
+        </Style>
+        <Style Selector="TextBox.search:focus /template/ Border#PART_BorderElement">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="BorderBrush" Value="{StaticResource InkBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+
+        <Style Selector="ComboBox.sort">
+            <Setter Property="CornerRadius" Value="0" />
+            <Setter Property="Height" Value="32" />
+            <Setter Property="MinHeight" Value="32" />
+            <Setter Property="Background" Value="{StaticResource PaperDarkBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource LineBrush}" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="MinWidth" Value="150" />
+        </Style>
+
+        <Style Selector="MenuFlyoutPresenter">
+            <Setter Property="CornerRadius" Value="0" />
+            <Setter Property="Background" Value="{StaticResource PaperBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource InkBrush}" />
+        </Style>
+        <Style Selector="MenuFlyoutPresenter MenuItem">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="CornerRadius" Value="0" />
+        </Style>
+        <Style Selector="FlyoutPresenter">
+            <Setter Property="CornerRadius" Value="0" />
+            <Setter Property="Background" Value="{StaticResource PaperBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource InkBrush}" />
+        </Style>
+
+        <Style Selector="ProgressBar.thin">
+            <Setter Property="MinHeight" Value="3" />
+            <Setter Property="Height" Value="3" />
+            <Setter Property="CornerRadius" Value="0" />
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+
+        <!-- Window buttons drawn by the launcher (the title bar is part of the page). -->
+        <Style Selector="Button.caption">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="CornerRadius" Value="0" />
+            <Setter Property="Width" Value="48" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+        </Style>
+        <Style Selector="Button.caption:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="{StaticResource HoverBrush}" />
+            <Setter Property="Foreground" Value="{StaticResource InkBrush}" />
+        </Style>
+        <Style Selector="Button.caption.close:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#C42B1C" />
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+        <Style Selector="Button.caption PathIcon">
+            <Setter Property="Width" Value="10" />
+            <Setter Property="Height" Value="10" />
+        </Style>
+    </Application.Styles>
+</Application>

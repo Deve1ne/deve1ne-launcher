@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Deve1ne.Launcher/Deve1ne.Launcher.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Deve1ne.Launcher.Tests/Deve1ne.Launcher.Tests.csproj" />
+  </Folder>
+</Solution>
