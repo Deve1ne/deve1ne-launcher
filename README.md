@@ -30,7 +30,8 @@
   release before anything is installed.
 - **No administrator rights.** Apps install for the current user; an open app is asked to close
   (and save its session) before it is updated.
-- **Updates itself.** The launcher is one of the apps: a new release replaces it and restarts it.
+- **Updates itself.** When a new launcher is out, an *Update launcher* button shows up in the title bar:
+  one click replaces it and restarts it.
 - Grid or table view, filters (all, installed, updates, not installed), sort and search.
 
 <img src="docs/launcher-table.png" alt="The table view: one row per app" width="100%" />
@@ -40,14 +41,14 @@
 | # | App | Repository |
 |---|---|---|
 | 01 | **Git UI**: a fast desktop Git client with a readable commit graph | [Deve1ne/git-ui](https://github.com/Deve1ne/git-ui) |
-| 02 | **Deve1ne Launcher**: this app | [Deve1ne/deve1ne-launcher](https://github.com/Deve1ne/deve1ne-launcher) |
 
 ## Install
 
 Download `Deve1ne-Launcher-<version>-win-x64.exe` from the
 **[latest release](https://github.com/Deve1ne/deve1ne-launcher/releases/latest)** and run it. It copies
 itself to `%LocalAppData%\Programs\Deve1ne Launcher`, adds a Start menu shortcut and an entry in
-*Settings > Apps*, then opens. Uninstalling it there leaves the apps it installed in place.
+*Settings > Apps*, then opens. Uninstalling it (there, or from its own settings) leaves the apps it
+installed in place.
 
 The executable is not code-signed yet, so Windows SmartScreen asks for a confirmation the first time
 (*More info* > *Run anyway*).

@@ -43,6 +43,23 @@ public partial class AppCardViewModel : ObservableObject
     public bool IsLauncher => App.Kind == InstallKind.Self;
 
     [ObservableProperty] private AppState state = AppState.Unknown;
+
+    /// <summary>The launcher's title-bar button: shown while an update is available or running.</summary>
+    public bool ShowSelfUpdate => IsBusy || State == AppState.UpdateAvailable;
+
+    public string SelfUpdateText => IsBusy ? BadgeText : $"UPDATE LAUNCHER · {_release?.Version}";
+
+    partial void OnStateChanged(AppState value) => NotifySelfUpdate();
+
+    partial void OnIsBusyChanged(bool value) => NotifySelfUpdate();
+
+    partial void OnBadgeTextChanged(string value) => NotifySelfUpdate();
+
+    private void NotifySelfUpdate()
+    {
+        OnPropertyChanged(nameof(ShowSelfUpdate));
+        OnPropertyChanged(nameof(SelfUpdateText));
+    }
     [ObservableProperty] private string? installedVersion;
     [ObservableProperty] private string badgeText = "CHECKING…";
     [ObservableProperty] private IBrush badgeForeground = Brushes.Gray;

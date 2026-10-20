@@ -65,6 +65,16 @@
                 </Border>
 
                 <StackPanel Grid.Column="3" Orientation="Horizontal">
+                    <!-- A new launcher release: one click downloads it, swaps the executable and restarts. -->
+                    <Panel Margin="0,0,12,0" VerticalAlignment="Center" IsVisible="{Binding Self.ShowSelfUpdate}"
+                           chrome:WindowDecorationProperties.ElementRole="User">
+                        <Button Classes="primary" Height="30" Padding="14,0" Command="{Binding Self.PrimaryCommand}"
+                                IsEnabled="{Binding Self.PrimaryEnabled}" ToolTip.Tip="{Binding Self.ErrorText}">
+                            <TextBlock Classes="mono" Text="{Binding Self.SelfUpdateText}" />
+                        </Button>
+                        <ProgressBar Classes="thin" VerticalAlignment="Bottom" Value="{Binding Self.Progress}" Maximum="100"
+                                     Foreground="{Binding Self.AccentBrush}" IsVisible="{Binding Self.HasProgress}" />
+                    </Panel>
                     <Border Classes="vline" />
                     <StackPanel Orientation="Horizontal" Margin="10,0" VerticalAlignment="Center"
                                 chrome:WindowDecorationProperties.ElementRole="User">
@@ -98,6 +108,11 @@
                                         <TextBlock Classes="mono" Text="OPEN THE DOWNLOAD FOLDER ↗" />
                                     </Button>
                                     <TextBlock Classes="mono faint" Text="{Binding VersionText}" />
+                                    <TextBlock Text="{Binding Self.ErrorText}" Foreground="{StaticResource ErrorBrush}" FontSize="12" TextWrapping="Wrap"
+                                               IsVisible="{Binding Self.ErrorText, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                                    <Button Classes="link" Padding="0" Command="{Binding Self.UninstallCommand}" IsVisible="{Binding Self.CanUninstall}">
+                                        <TextBlock Classes="mono" Text="UNINSTALL THE LAUNCHER…" Foreground="{StaticResource ErrorBrush}" />
+                                    </Button>
                                 </StackPanel>
                             </Flyout>
                         </Button.Flyout>

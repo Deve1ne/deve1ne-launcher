@@ -32,10 +32,14 @@ public partial class LauncherViewModel : ObservableObject
             Apps.Add(new AppCardViewModel(app, AppInstallers.For(app), _gitHub, this));
         }
 
+        Self = new AppCardViewModel(SuiteCatalog.Launcher, AppInstallers.For(SuiteCatalog.Launcher), _gitHub, this);
         ApplyFilter();
     }
 
     public LauncherSettings Settings { get; }
+
+    /// <summary>The launcher itself: its update button sits in the title bar, not among the apps.</summary>
+    public AppCardViewModel Self { get; }
 
     public ObservableCollection<AppCardViewModel> Apps { get; } = new();
 
@@ -172,7 +176,8 @@ public partial class LauncherViewModel : ObservableObject
         StatusText = "CHECKING…";
 
         // One request per repository, all at once; a failing repository only leaves its apps offline.
-        var repositories = Apps.Select(a => a.App.Repository).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+        var everything = Apps.Append(Self).ToList();
+        var repositories = everything.Select(a => a.App.Repository).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
         var lookups = repositories.ToDictionary(r => r, r => _gitHub.GetLatestReleaseAsync(r), StringComparer.OrdinalIgnoreCase);
         var errors = new List<string>();
         foreach (var (repository, lookup) in lookups)
@@ -194,7 +199,7 @@ public partial class LauncherViewModel : ObservableObject
             _checkedAt = DateTimeOffset.Now;
         }
 
-        foreach (var app in Apps)
+        foreach (var app in everything)
         {
             var lookup = lookups[app.App.Repository];
             app.Refresh(lookup.IsCompletedSuccessfully ? lookup.Result : null, lookup.IsCompletedSuccessfully);

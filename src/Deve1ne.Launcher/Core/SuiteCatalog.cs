@@ -72,9 +72,10 @@ public static class SuiteCatalog
         InstallFolderName: "GitUi",
         ExecutableName: "GitUi.Presentation.exe");
 
+    /// <summary>The launcher itself: not listed with the apps, it updates from the title bar.</summary>
     public static readonly SuiteApp Launcher = new(
         Id: "launcher",
-        Number: "02",
+        Number: "00",
         Name: "Deve1ne ",
         Accent: "Launcher",
         Tagline: "Installs and updates the suite",
@@ -83,5 +84,6 @@ public static class SuiteCatalog
         Repository: LauncherRepository,
         AssetPattern: "Deve1ne-Launcher-{version}-win-x64.exe");
 
-    public static IReadOnlyList<SuiteApp> All { get; } = new[] { GitUi, Launcher };
+    /// <summary>The apps shown on the page, in suite order.</summary>
+    public static IReadOnlyList<SuiteApp> All { get; } = new[] { GitUi };
 }
