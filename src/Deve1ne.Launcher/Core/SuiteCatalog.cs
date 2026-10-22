@@ -72,6 +72,20 @@ public static class SuiteCatalog
         InstallFolderName: "GitUi",
         ExecutableName: "GitUi.Presentation.exe");
 
+    public static readonly SuiteApp ConvComp = new(
+        Id: "convcomp",
+        Number: "02",
+        Name: "Conv",
+        Accent: "Comp",
+        Tagline: "Convert and compress media",
+        AccentColor: "#9B6FE0",
+        Kind: InstallKind.Msi,
+        Repository: "Deve1ne/convcomp",
+        AssetPattern: "ConvComp-{version}-win-x64.msi",
+        UpgradeCode: "{D5DCAEDD-EF6B-44E5-84CE-5B05CB1CFEC4}",
+        InstallFolderName: "ConvComp",
+        ExecutableName: "ConvComp.exe");
+
     /// <summary>The launcher itself: not listed with the apps, it updates from the title bar.</summary>
     public static readonly SuiteApp Launcher = new(
         Id: "launcher",
@@ -85,5 +99,5 @@ public static class SuiteCatalog
         AssetPattern: "Deve1ne-Launcher-{version}-win-x64.exe");
 
     /// <summary>The apps shown on the page, in suite order.</summary>
-    public static IReadOnlyList<SuiteApp> All { get; } = new[] { GitUi };
+    public static IReadOnlyList<SuiteApp> All { get; } = new[] { GitUi, ConvComp };
 }

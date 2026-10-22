@@ -41,6 +41,7 @@
 | # | App | Repository |
 |---|---|---|
 | 01 | **Git UI**: a fast desktop Git client with a readable commit graph | [Deve1ne/git-ui](https://github.com/Deve1ne/git-ui) |
+| 02 | **ConvComp**: converts and compresses images (JPEG, WebP, AVIF, HEIC...) and music (MP3, FLAC, ALAC, AIFF...) | [Deve1ne/convcomp](https://github.com/Deve1ne/convcomp) |
 
 ## Install
 

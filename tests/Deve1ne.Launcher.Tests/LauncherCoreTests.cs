@@ -71,6 +71,19 @@ public class ReleaseParserTests
         Assert.NotNull(release.Asset(SuiteCatalog.GitUi.AssetName(release.Version)));
         Assert.Equal("Deve1ne-Launcher-0.3.0-win-x64.exe", SuiteCatalog.Launcher.AssetName("0.3.0"));
         Assert.Null(release.Asset(SuiteCatalog.Launcher.AssetName(release.Version)));
+        Assert.Equal("ConvComp-0.1.0-win-x64.msi", SuiteCatalog.ConvComp.AssetName("0.1.0"));
+    }
+
+    [Fact]
+    public void Catalog_apps_never_share_an_id_a_number_an_upgrade_code_or_a_folder()
+    {
+        var apps = SuiteCatalog.All.Append(SuiteCatalog.Launcher).ToList();
+
+        Assert.Equal(apps.Count, apps.Select(a => a.Id).Distinct().Count());
+        Assert.Equal(apps.Count, apps.Select(a => a.Number).Distinct().Count());
+        var msiApps = apps.Where(a => a.Kind == InstallKind.Msi).ToList();
+        Assert.Equal(msiApps.Count, msiApps.Select(a => a.UpgradeCode!.ToUpperInvariant()).Distinct().Count());
+        Assert.Equal(msiApps.Count, msiApps.Select(a => a.InstallFolderName!.ToUpperInvariant()).Distinct().Count());
     }
 }
 
